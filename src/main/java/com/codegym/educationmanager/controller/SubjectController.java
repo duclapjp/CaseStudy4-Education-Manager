@@ -4,6 +4,7 @@ import com.codegym.educationmanager.model.grade.Grade;
 import com.codegym.educationmanager.model.subject.Subject;
 import com.codegym.educationmanager.repository.ISubjectRepository;
 import com.codegym.educationmanager.service.grade.IGradeService;
+import com.codegym.educationmanager.service.subject.ISubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,12 @@ import java.util.Optional;
 @RequestMapping("/subjects")
 public class SubjectController {
     @Autowired
-    private ISubjectRepository subjectRepository;
+    private ISubjectService subjectService;
 
     //show list
     @GetMapping("/list")
     public ModelAndView showListGrade() {
-        Iterable<Subject> subjects = subjectRepository.findAll();
+        Iterable<Subject> subjects = subjectService.findAll();
         ModelAndView modelAndView = new ModelAndView("subject/view");
         modelAndView.addObject("subject", subjects);
         return modelAndView;
@@ -31,24 +32,24 @@ public class SubjectController {
 
     @GetMapping
     public ResponseEntity<Iterable<Subject>> findAll() {
-        return new ResponseEntity<>(subjectRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(subjectService.findAll(), HttpStatus.OK);
     }
     //them
     @PostMapping
     public ResponseEntity<Subject> create(@RequestBody Subject subject) {
-        return new ResponseEntity<>(subjectRepository.save(subject), HttpStatus.CREATED);
+        return new ResponseEntity<>(subjectService.save(subject), HttpStatus.CREATED);
     }
 
     //    sua
     @PutMapping("/{id}")
     public ResponseEntity<Subject> update(@PathVariable Long id, @RequestBody Subject subject) {
-        Optional<Subject> subjectOptional = subjectRepository.findById(id);
+        Optional<Subject> subjectOptional = subjectService.findById(id);
         if (!subjectOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else if (subject.getId() == null) {
             subject.setId(id);
         }
-        subjectRepository.save(subject);
+        subjectService.save(subject);
         return new ResponseEntity<>(subjectOptional.get(), HttpStatus.OK);
     }
 
@@ -56,11 +57,11 @@ public class SubjectController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Subject> delete(@PathVariable Long id) {
-        Optional<Subject> subjectOptional = subjectRepository.findById(id);
+        Optional<Subject> subjectOptional = subjectService.findById(id);
         if (!subjectOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
-            subjectRepository.deleteById(id);
+            subjectService.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
