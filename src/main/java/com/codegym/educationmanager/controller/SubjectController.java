@@ -33,7 +33,6 @@ public class SubjectController {
     public ResponseEntity<Iterable<Subject>> findAll() {
         return new ResponseEntity<>(subjectRepository.findAll(), HttpStatus.OK);
     }
-
     //them
     @PostMapping
     public ResponseEntity<Subject> create(@RequestBody Subject subject) {
