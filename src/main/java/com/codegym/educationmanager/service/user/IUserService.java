@@ -1,4 +1,4 @@
-package com.codegym.educationmanager.service.admin;
+package com.codegym.educationmanager.service.user;
 
 import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.service.IGeneralService;
