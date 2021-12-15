@@ -21,8 +21,8 @@ public class ScoreService implements IScoreService{
     }
 
     @Override
-    public void save(Score score) {
-        scoreRepository.save(score);
+    public Score save(Score score) {
+        return scoreRepository.save(score);
     }
 
     @Override

@@ -21,8 +21,8 @@ public class GradeService implements IGradeService{
     }
 
     @Override
-    public void save(Grade grade) {
-        gradeRepository.save(grade);
+    public Grade save(Grade grade) {
+        return gradeRepository.save(grade);
     }
 
     @Override

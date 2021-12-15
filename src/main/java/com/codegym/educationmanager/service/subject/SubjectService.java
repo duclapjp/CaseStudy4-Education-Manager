@@ -21,8 +21,8 @@ public class SubjectService implements ISubjectService{
     }
 
     @Override
-    public void save(Subject subject) {
-        subjectRepository.save(subject);
+    public Subject save(Subject subject) {
+        return subjectRepository.save(subject);
     }
 
     @Override
