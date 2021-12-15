@@ -27,7 +27,7 @@ public class SubjectController {
         ModelAndView modelAndView = new ModelAndView("subject/view");
         modelAndView.addObject("subject", subjects);
         return modelAndView;
-    }
+    }gt
 
     @GetMapping
     public ResponseEntity<Iterable<Subject>> findAll() {
