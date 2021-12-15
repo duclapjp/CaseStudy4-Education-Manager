@@ -21,6 +21,15 @@ public class Score {
         this.user = student;
     }
 
+    public Score(Long id, Double score) {
+        this.id = id;
+        this.score = score;
+    }
+
+    public Score(Double score) {
+        this.score = score;
+    }
+
     public Score(Long id, Double score, User student) {
         this.id = id;
         this.score = score;
