@@ -38,7 +38,7 @@ public class ScoreController {
     @PutMapping("/{id}")
     public ResponseEntity<Score> editScore(@PathVariable Long id, @RequestBody Score score) {
         Optional<Score> scores = scoreService.findById(id);
-        if (!scores.isPresent()) {
+        if (!scores.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else if(score.getId() == null) {
             score.setId(id);
