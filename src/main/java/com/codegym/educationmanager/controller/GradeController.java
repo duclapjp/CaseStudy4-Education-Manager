@@ -1,7 +1,9 @@
 package com.codegym.educationmanager.controller;
 
+import com.codegym.educationmanager.model.code.Code;
 import com.codegym.educationmanager.model.grade.Grade;
 import com.codegym.educationmanager.model.user.User;
+import com.codegym.educationmanager.service.code.ICodeService;
 import com.codegym.educationmanager.service.grade.IGradeService;
 import com.codegym.educationmanager.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -18,6 +23,8 @@ public class GradeController {
     private IGradeService gradeService;
     @Autowired
     private IUserService userService;
+    @Autowired
+    private ICodeService codeService;
 
     @GetMapping("/list")
     public ModelAndView showListGrade() {
@@ -37,7 +44,19 @@ public class GradeController {
     @GetMapping("/gradeByUser/{id}")
     public ResponseEntity<Grade> findByUser(@PathVariable Long id){
         User user = userService.findById(id).get();
-        return new ResponseEntity<>(gradeService.findGradeByUser(user), HttpStatus.OK);
+        Grade grade = gradeService.findGradeByUser(user);
+        return new ResponseEntity<>(grade, HttpStatus.OK);
+    }
+    @GetMapping("/findcodeuser/{id}")
+    public ResponseEntity<List<Code>> findAllCode(@PathVariable Long id){
+        User user = userService.findById(id).get();
+        Grade grade = gradeService.findGradeByUser(user);
+        List<Code> codes = new ArrayList<>();
+        for (int i = 0; i < grade.getUsers().size(); i++){
+            Code code = codeService.findCodeByUser(grade.getUsers().get(i));
+            codes.add(code);
+        }
+        return new ResponseEntity<>(codes, HttpStatus.OK);
     }
     @PostMapping()
     public ResponseEntity<Grade> save(@RequestBody Grade grade) {
