@@ -43,4 +43,14 @@ public class RoleController {
             return new ResponseEntity<>(role1.get(),HttpStatus.OK);
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<Role> getRole(@PathVariable ("id") Long id){
+        Optional<Role> roleOptional = roleService.findById(id);
+        if (!roleOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(roleOptional.get(),HttpStatus.OK);
+        }
+    }
+
 }

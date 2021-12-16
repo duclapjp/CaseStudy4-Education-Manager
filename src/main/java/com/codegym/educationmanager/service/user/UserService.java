@@ -1,4 +1,5 @@
 package com.codegym.educationmanager.service.user;
+import com.codegym.educationmanager.model.role.Role;
 import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.model.user.UserPrinciple;
 import com.codegym.educationmanager.repository.IUserRepository;
@@ -40,6 +41,7 @@ public class UserService implements IUserService{
         return userRepository.findByUsername(username);
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findByUsername(username);
@@ -47,5 +49,10 @@ public class UserService implements IUserService{
             throw new UsernameNotFoundException(username);
         }
         return UserPrinciple.build(userOptional.get());
+    }
+
+    @Override
+    public Iterable<User> findUserByRole(Optional<Role> role) {
+        return userRepository.findUserByRole(role);
     }
 }
