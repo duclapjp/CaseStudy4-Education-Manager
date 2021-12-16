@@ -1,6 +1,7 @@
 package com.codegym.educationmanager.service.code;
 
 import com.codegym.educationmanager.model.code.Code;
+import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.repository.ICodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,10 @@ public class CodeService implements ICodeService {
     @Override
     public void deleteById(Long id) {
         codeRepository.deleteById(id);
+    }
+
+    @Override
+    public Code findCodeByUser(User user) {
+        return codeRepository.findCodeByUser(user);
     }
 }
