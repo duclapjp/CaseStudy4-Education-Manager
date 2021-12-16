@@ -21,6 +21,10 @@ public class BlogController {
         modelAndView.addObject("blog",blogService.findAll());
         return modelAndView;
     }
+    @GetMapping
+    public ResponseEntity<Iterable<Blog>> findAll(){
+        return new ResponseEntity<>(blogService.findAll(), HttpStatus.OK);
+    }
     @GetMapping("/view")
     public ResponseEntity<Iterable<Blog>>showAll(){
  return new ResponseEntity<>(blogService.findAll(),HttpStatus.OK);

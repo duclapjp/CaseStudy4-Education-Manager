@@ -14,7 +14,7 @@ import java.util.Date;
 @Component
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "123456789";
+    private static final String SECRET_KEY = "546245848";
     private static final long EXPIRE_TIME = 86400000000L;
     private static final Logger logger = LoggerFactory.getLogger(JwtService.class.getName());
 
