@@ -1,6 +1,7 @@
 package com.codegym.educationmanager.service.grade;
 
 import com.codegym.educationmanager.model.grade.Grade;
+import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.repository.IGradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,10 @@ public class GradeService implements IGradeService{
     @Override
     public void deleteById(Long id) {
         gradeRepository.deleteById(id);
+    }
+
+    @Override
+    public Grade findGradeByUser(User user) {
+        return gradeRepository.findGradeByUser(user);
     }
 }
