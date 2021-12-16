@@ -23,14 +23,12 @@ public class BlogController {
         modelAndView.addObject("blog", blogService.findAll());
         return modelAndView;
     }
-<<<<<<< HEAD
 
-=======
     @GetMapping
     public ResponseEntity<Iterable<Blog>> findAll(){
         return new ResponseEntity<>(blogService.findAll(), HttpStatus.OK);
     }
->>>>>>> 1676978ebbf128ddff7ed2af31120b5d72815e7d
+
     @GetMapping("/view")
     public ResponseEntity<Iterable<Blog>> showAll() {
         return new ResponseEntity<>(blogService.findAll(), HttpStatus.OK);
