@@ -52,8 +52,8 @@ public class GradeController {
         User user = userService.findById(id).get();
         Grade grade = gradeService.findGradeByUser(user);
         List<Code> codes = new ArrayList<>();
-        for (int i = 0; i < grade.getUsers().size(); i++){
-            Code code = codeService.findCodeByUser(grade.getUsers().get(i));
+        for (int i = 0; i < grade.getUser().size(); i++){
+            Code code = codeService.findCodeByUser(grade.getUser().get(i));
             codes.add(code);
         }
         return new ResponseEntity<>(codes, HttpStatus.OK);
