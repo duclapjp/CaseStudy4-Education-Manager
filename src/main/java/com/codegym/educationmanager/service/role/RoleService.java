@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+
 @Service
 public class RoleService implements IRoleService {
     @Autowired
@@ -29,11 +30,9 @@ public class RoleService implements IRoleService {
 
     @Override
     public void deleteById(Long id) {
+
         roleRepository.deleteById(id);
     }
 
-    @Override
-    public Role findByName(String name) {
-        return roleRepository.findByName(name);
-    }
 }
+
