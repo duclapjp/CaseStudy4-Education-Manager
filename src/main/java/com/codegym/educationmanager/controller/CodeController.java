@@ -1,8 +1,6 @@
 package com.codegym.educationmanager.controller;
 
 import com.codegym.educationmanager.model.code.Code;
-import com.codegym.educationmanager.model.subject.Subject;
-import com.codegym.educationmanager.repository.ISubjectRepository;
 import com.codegym.educationmanager.service.code.ICodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

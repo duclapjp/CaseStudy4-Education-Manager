@@ -5,20 +5,18 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Controller
+@RequestMapping("/")
 public class ImageUploadController {
     @Value("${file-path}")
     private String filePath;
-    @RequestMapping(value = "getimage/{photo}", method = RequestMethod.GET)
+    @GetMapping("getimage/{photo}")
     @ResponseBody
     public ResponseEntity<ByteArrayResource> getImage(@PathVariable("photo") String photo){
         if (!photo.equals("") || photo != null){
