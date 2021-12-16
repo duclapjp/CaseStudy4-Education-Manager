@@ -1,5 +1,7 @@
 package com.codegym.educationmanager.model.blog;
 
+import com.codegym.educationmanager.model.grade.Grade;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,14 +13,13 @@ public class Blog {
     private String title;
     private String content;
     private String date;
+    public Blog() {
+    }
 
     public Blog(String title, String content, String date) {
         this.title = title;
         this.content = content;
         this.date = date;
-    }
-
-    public Blog() {
     }
 
     public Blog(Long id, String title, String content, String date) {
