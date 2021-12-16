@@ -2,7 +2,10 @@ package com.codegym.educationmanager.service.user;
 
 import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.service.IGeneralService;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface IUserService extends IGeneralService<User> {
+import java.util.Optional;
 
+public interface IUserService extends IGeneralService<User>, UserDetailsService {
+    Optional<User> findByUsername(String username);
 }
