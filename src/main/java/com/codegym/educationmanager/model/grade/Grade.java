@@ -15,26 +15,22 @@ public class Grade {
     private String name;
     @OneToMany(targetEntity = User.class)
     private List<User> user;
-    @OneToOne(targetEntity = Blog.class)
-    private Blog blog;
+    @OneToMany(targetEntity = Grade.class)
+    private List<Blog> blog;
 
     public Grade() {
     }
 
-    public Grade(String name, List<User> users, Blog blog) {
+    public Grade(String name, List<User> user, List<Blog> blog) {
         this.name = name;
-        this.user = users;
+        this.user = user;
         this.blog = blog;
     }
 
-    public Grade(String name) {
-        this.name = name;
-    }
-
-    public Grade(Long id, String name, List<User> users, Blog blog) {
+    public Grade(Long id, String name, List<User> user, List<Blog> blog) {
         this.id = id;
         this.name = name;
-        this.user = users;
+        this.user = user;
         this.blog = blog;
     }
 
@@ -54,19 +50,19 @@ public class Grade {
         this.name = name;
     }
 
-    public List<User> getUsers() {
+    public List<User> getUser() {
         return user;
     }
 
-    public void setUsers(List<User> users) {
-        this.user = users;
+    public void setUser(List<User> user) {
+        this.user = user;
     }
 
-    public Blog getBlog() {
+    public List<Blog> getBlog() {
         return blog;
     }
 
-    public void setBlog(Blog blog) {
+    public void setBlog(List<Blog> blog) {
         this.blog = blog;
     }
 }

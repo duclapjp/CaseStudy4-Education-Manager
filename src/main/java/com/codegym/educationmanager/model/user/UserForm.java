@@ -1,5 +1,6 @@
 package com.codegym.educationmanager.model.user;
 
+import com.codegym.educationmanager.model.role.Role;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
@@ -16,6 +17,7 @@ public class UserForm {
     private String username;
     @NotEmpty(message = "khong de trong")
     private String password;
+    private Role role;
     private MultipartFile image;
 
     public UserForm() {
@@ -37,6 +39,16 @@ public class UserForm {
         this.phone = phone;
         this.username = username;
         this.password = password;
+        this.image = image;
+    }
+
+    public UserForm(String name, String email, String phone, String username, String password, Role role, MultipartFile image) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.role = role;
         this.image = image;
     }
 
@@ -94,5 +106,13 @@ public class UserForm {
 
     public void setImage(MultipartFile image) {
         this.image = image;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }
