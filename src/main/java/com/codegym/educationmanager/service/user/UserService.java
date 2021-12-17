@@ -4,6 +4,8 @@ import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.model.user.UserPrinciple;
 import com.codegym.educationmanager.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -50,7 +52,10 @@ public class UserService implements IUserService{
         }
         return UserPrinciple.build(userOptional.get());
     }
-
+    @Override
+    public Page<User> pageUser(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
     @Override
     public Iterable<User> findUserByRole(Optional<Role> role) {
         return userRepository.findUserByRole(role);

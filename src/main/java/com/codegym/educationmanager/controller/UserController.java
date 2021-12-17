@@ -7,6 +7,9 @@ import com.codegym.educationmanager.service.role.IRoleService;
 import com.codegym.educationmanager.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -36,7 +39,10 @@ public class UserController {
     public ResponseEntity<Iterable<User>> findAll() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
-
+    @GetMapping("/page")
+    public ResponseEntity<Page<User>> findAll(@PageableDefault(size = 6) Pageable pageable){
+        return new ResponseEntity<>(userService.pageUser(pageable), HttpStatus.OK);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);

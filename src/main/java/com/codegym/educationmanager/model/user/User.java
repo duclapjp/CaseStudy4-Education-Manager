@@ -21,6 +21,7 @@ public class User {
     private String username;
     private String password;
     private String image;
+    private String code;
     @OneToOne(targetEntity = Role.class)
     @JoinColumn(name = "role_id")
     private Role role;
@@ -35,6 +36,29 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public User(Long id, String name, String email, String phone, String username, String password, String image, String code, Role role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.image = image;
+        this.code = code;
+        this.role = role;
+    }
+
+    public User(String name, String email, String phone, String username, String password, String image, String code, Role role) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.image = image;
+        this.code = code;
+        this.role = role;
     }
 
     public User(String name, String email, String phone, String username, String password, String image, Role role) {
@@ -121,5 +145,17 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

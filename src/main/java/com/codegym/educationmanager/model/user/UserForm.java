@@ -52,6 +52,23 @@ public class UserForm {
         this.image = image;
     }
 
+    public UserForm(String name, String email, String phone, String username, String password, Role role) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
+
+    public UserForm(String name, String email, String phone, String username, String password) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+    }
+
     public Long getId() {
         return id;
     }
