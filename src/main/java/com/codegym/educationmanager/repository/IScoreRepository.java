@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IScoreRepository extends JpaRepository<Score, Long> {
+
 }
