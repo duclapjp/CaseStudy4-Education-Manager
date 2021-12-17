@@ -100,5 +100,4 @@ public class UserController {
         modelAndView.addObject("message", "successful create");
         return modelAndView;
     }
-
 }
