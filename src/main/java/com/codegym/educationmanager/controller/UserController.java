@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -84,4 +85,19 @@ public class UserController {
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
 
+    @GetMapping("/create-ministries")
+    public ModelAndView showCreateMinistryForm(){
+        ModelAndView modelAndView = new ModelAndView("/ministry/create");
+        modelAndView.addObject("ministries", new User());
+        return modelAndView;
+    }
+
+    @PostMapping("/create_ministry")
+    public ModelAndView createMinistry(@ModelAttribute ("ministry") User user){
+        userService.save(user);
+        ModelAndView modelAndView = new ModelAndView("/ministry/create");
+        modelAndView.addObject("ministries", user);
+        modelAndView.addObject("message", "successful create");
+        return modelAndView;
+    }
 }
