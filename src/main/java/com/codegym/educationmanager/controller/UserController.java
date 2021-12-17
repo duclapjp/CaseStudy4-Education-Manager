@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -24,8 +25,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/user")
+@CrossOrigin("*")
 public class UserController {
     @Autowired
     private IUserService userService;
@@ -38,15 +39,23 @@ public class UserController {
     public ResponseEntity<Iterable<User>> findAll() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
-    @GetMapping("/page")
-    public ResponseEntity<Page<User>> findAll(@PageableDefault(size = 6) Pageable pageable){
-        return new ResponseEntity<>(userService.pageUser(pageable), HttpStatus.OK);
+    @GetMapping("/page/{roleName}")
+    public ResponseEntity<Page<User>> findAll(@PageableDefault(size = 6) Pageable pageable, @PathVariable String roleName){
+        Role role = roleService.findRoleByName(roleName);
+        return new ResponseEntity<>(userService.findUserByRolePage(role, pageable), HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
     }
-
+    @GetMapping("/createForm")
+    public ModelAndView createForm(){
+        Iterable<Role> roles = roleService.findAll();
+        ModelAndView modelAndView = new ModelAndView("user/create");
+        modelAndView.addObject("userForm", new UserForm());
+        modelAndView.addObject("roles", roles);
+        return modelAndView;
+    }
     @PostMapping
     public ResponseEntity<User> saveUser(@Validated @RequestBody UserForm userForm, BindingResult bindingResult) {
         if (!bindingResult.hasFieldErrors()) {
@@ -83,5 +92,4 @@ public class UserController {
         Iterable<User> users = userService.findUserByRole(role1);
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
-
 }

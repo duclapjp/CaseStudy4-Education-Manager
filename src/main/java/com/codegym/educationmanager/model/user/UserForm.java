@@ -17,6 +17,7 @@ public class UserForm {
     private String username;
     @NotEmpty(message = "khong de trong")
     private String password;
+    private String code;
     private Role role;
     private MultipartFile image;
 
@@ -39,6 +40,17 @@ public class UserForm {
         this.phone = phone;
         this.username = username;
         this.password = password;
+        this.image = image;
+    }
+
+    public UserForm(String name, String email, String phone, String username, String password, String code, Role role, MultipartFile image) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.code = code;
+        this.role = role;
         this.image = image;
     }
 
