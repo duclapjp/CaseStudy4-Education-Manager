@@ -13,6 +13,8 @@ public class Blog {
     private String title;
     private String content;
     private String date;
+    @ManyToOne(targetEntity = Grade.class)
+    private Grade grade;
     public Blog() {
     }
 

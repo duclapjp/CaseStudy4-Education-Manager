@@ -64,7 +64,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> saveUser(@Validated @RequestBody UserForm userForm, BindingResult bindingResult) {
         if (!bindingResult.hasFieldErrors()) {
-            if (userForm.getImage().isEmpty()) {
+            if (userForm.getImage() != null) {
                 String fileName = userForm.getImage().getOriginalFilename();
                 Path path = Paths.get(filePath);
                 try {
