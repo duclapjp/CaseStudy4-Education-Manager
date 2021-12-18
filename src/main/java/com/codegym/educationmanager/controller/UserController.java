@@ -105,7 +105,7 @@ public class UserController {
         user.setName(userForm.getName());
         user.setEmail(userForm.getEmail());
         user.setPhone(userForm.getPhone());
-//        user.setCode(userForm.getCode());
+        user.setCode(userForm.getCode());
         user.setUsername(userForm.getUsername());
         user.setPassword(userForm.getPassword());
         user.setImage(fileName);
