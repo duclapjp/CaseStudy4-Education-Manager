@@ -30,12 +30,13 @@ public class RoleService implements IRoleService {
 
     @Override
     public void deleteById(Long id) {
+
         roleRepository.deleteById(id);
     }
 
     @Override
-    public Role findRoleByName(String name) {
-        return roleRepository.findRoleByName(name);
+    public Role findRoleByName(String roleName) {
+        return roleRepository.findRoleByName(roleName);
     }
 }
 

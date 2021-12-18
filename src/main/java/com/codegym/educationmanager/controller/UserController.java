@@ -42,7 +42,7 @@ public class UserController {
     @GetMapping("/page/{roleName}")
     public ResponseEntity<Page<User>> findAll(@PageableDefault(size = 6) Pageable pageable, @PathVariable String roleName){
         Role role = roleService.findRoleByName(roleName);
-        return new ResponseEntity<>(userService.findUserByRolePage(role, pageable), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAllByRole(role, pageable), HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id) {
