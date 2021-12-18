@@ -1,6 +1,7 @@
 package com.codegym.educationmanager.service.score;
 
 import com.codegym.educationmanager.model.score.Score;
+import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.repository.IScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,10 @@ public class ScoreService implements IScoreService{
     @Override
     public void deleteById(Long id) {
         scoreRepository.deleteById(id);
+    }
+
+    @Override
+    public Iterable<Score> findAllByUser(User user) {
+        return scoreRepository.findAllByUser(user);
     }
 }

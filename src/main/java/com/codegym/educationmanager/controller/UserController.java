@@ -12,11 +12,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,10 +44,11 @@ public class UserController {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
     @GetMapping("/page/{roleName}")
-    public ResponseEntity<Page<User>> findAll(@PageableDefault(size = 6) Pageable pageable, @PathVariable String roleName){
+    public ResponseEntity<Page<User>> findAll(@PageableDefault(size = 6) Pageable pageable, @PathVariable String roleName) {
         Role role = roleService.findRoleByName(roleName);
         return new ResponseEntity<>(userService.findAllByRole(role, pageable), HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
@@ -87,9 +92,55 @@ public class UserController {
     }
 
     @GetMapping("/ministryByRole/{role}")
-    public ResponseEntity<Iterable<User>> getMinistry(@PathVariable ("role") Long id) {
+    public ResponseEntity<Iterable<User>> getMinistry(@PathVariable("role") Long id) {
         Optional<Role> role1 = roleService.findById(id);
         Iterable<User> users = userService.findUserByRole(role1);
-        return new ResponseEntity<>(users,HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    //tao moi ministry
+    @PostMapping("/createMinistry")
+    public ResponseEntity<User> createMinistry(@RequestBody UserForm userForm) {
+        MultipartFile multipartFile = userForm.getImage();
+        String fileName = multipartFile.getOriginalFilename();
+        try {
+            FileCopyUtils.copy(userForm.getImage().getBytes(), new File(fileName+filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        User user = new User();
+        user.setName(userForm.getName());
+        user.setEmail(userForm.getEmail());
+        user.setPhone(userForm.getPhone());
+//        user.setCode(userForm.getCode());
+        user.setUsername(userForm.getUsername());
+        user.setPassword(userForm.getPassword());
+        user.setImage(fileName);
+        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+    }
+
+    //cap nhat ministry
+    @PutMapping("/updateMinistry/{id}")
+    public ResponseEntity<User> editUser(@PathVariable ("id") Long id, UserForm userForm) {
+        Optional<User> userOptional = userService.findById(id);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            MultipartFile userFormImage = userForm.getImage();
+            String fileName = userFormImage.getOriginalFilename();
+            try {
+                FileCopyUtils.copy(userFormImage.getBytes(), new File(fileName + filePath));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            User user = new User();
+            user.setName(userOptional.get().getName());
+            user.setEmail(userOptional.get().getEmail());
+            user.setPhone(userOptional.get().getPhone());
+            user.setUsername(userOptional.get().getUsername());
+            user.setPassword(userOptional.get().getPassword());
+            user.setImage(fileName);
+            return new ResponseEntity<>(userService.save(user),HttpStatus.OK);
+        }
     }
 }

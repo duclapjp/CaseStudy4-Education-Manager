@@ -1,7 +1,9 @@
 package com.codegym.educationmanager.controller;
 
 import com.codegym.educationmanager.model.score.Score;
+import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.service.score.IScoreService;
+import com.codegym.educationmanager.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -17,6 +19,8 @@ import java.util.Optional;
 public class ScoreController {
     @Autowired
     private IScoreService scoreService;
+    @Autowired
+    private IUserService userService;
 
     @GetMapping("/view")
     public ModelAndView showAllScore() {
@@ -55,6 +59,11 @@ public class ScoreController {
             scoreService.deleteById(id);}
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Iterable<Score>> findAllScoreByUser(@PathVariable Long id){
+        Optional<User> user = userService.findById(id);
+        Iterable<Score> scores = scoreService.findAllByUser(user.get());
+        return new ResponseEntity<>(scores,HttpStatus.OK);
+    }
 }
 
