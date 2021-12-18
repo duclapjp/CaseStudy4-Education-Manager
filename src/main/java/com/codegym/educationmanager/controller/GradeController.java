@@ -1,5 +1,6 @@
 package com.codegym.educationmanager.controller;
 
+import com.codegym.educationmanager.model.blog.Blog;
 import com.codegym.educationmanager.model.grade.Grade;
 import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.service.grade.IGradeService;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -56,5 +59,15 @@ public class GradeController {
     public ResponseEntity<Grade> delete(@PathVariable Long id) {
         gradeService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Iterable<User>> findUserByGrade(@PathVariable Long id){
+        Optional<Grade> grade = gradeService.findById(id);
+        return new ResponseEntity<>(grade.get().getUser(), HttpStatus.OK);
+    }
+    @GetMapping("/blog/{id}")
+    public ResponseEntity<Iterable<Blog>> findBlogByGrade(@PathVariable Long id){
+        Optional<Grade> grade = gradeService.findById(id);
+        return new ResponseEntity<>(grade.get().getBlog(), HttpStatus.OK);
     }
 }
