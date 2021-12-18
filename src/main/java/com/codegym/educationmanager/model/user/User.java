@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(value = { "roles", "authorities" })
+@JsonIgnoreProperties(value = {"roles", "authorities"})
 @Entity
 @Table(name = "user")
 public class User {
@@ -28,6 +28,15 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public User(String name, String email, String phone, String username, String password, String image) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.image = image;
     }
 
     public User() {
