@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @CrossOrigin("*")
+@RequestMapping("/home")
 public class Home {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -27,7 +28,7 @@ public class Home {
 
     @Autowired
     private IUserService userService;
-    @PostMapping("/login")
+    @PostMapping
     public ResponseEntity<?> login(@RequestBody User user) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
