@@ -64,7 +64,7 @@ public class UserController {
     @GetMapping("/createAdminForm")
     public ModelAndView createAdminForm(){
         Iterable<Role> roles = roleService.findAll();
-        ModelAndView modelAndView = new ModelAndView("admin/create");
+        ModelAndView modelAndView = new ModelAndView("admin/create1");
         modelAndView.addObject("userForm", new UserForm());
         modelAndView.addObject("roles", roles);
         return modelAndView;
@@ -103,7 +103,7 @@ public class UserController {
     }
     @PostMapping("/admin")
     public ModelAndView saveAdmin(@Validated @ModelAttribute UserForm userForm, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView("admin/create");
+        ModelAndView modelAndView = new ModelAndView("admin/create1");
         if (!bindingResult.hasFieldErrors()) {
             if (userForm.getImage() != null) {
                 String fileName = userForm.getImage().getOriginalFilename();
@@ -114,18 +114,18 @@ public class UserController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                User user = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(),userForm.getCode(), fileName, userForm.getRole());
+                User user = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(), fileName, userForm.getRole());
                 userService.save(user);
                 modelAndView.addObject("userForm", userForm);
                 modelAndView.addObject("roles", roleService.findAll());
-                modelAndView.addObject("message", "Tao moi thanh cong");
+                modelAndView.addObject("message", "successful new creation");
                 return modelAndView;
             } else {
                 User use = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(),userForm.getCode(), userForm.getRole());
                 userService.save(use);
                 modelAndView.addObject("userForm", userForm);
                 modelAndView.addObject("roles", roleService.findAll());
-                modelAndView.addObject("message", "Tao moi thanh cong");
+                modelAndView.addObject("message", "successful new creation");
                 return modelAndView;
             }
         }
@@ -145,52 +145,6 @@ public class UserController {
         Optional<Role> role1 = roleService.findById(id);
         Iterable<User> users = userService.findUserByRole(role1);
         return new ResponseEntity<>(users, HttpStatus.OK);
-    }
-
-    //tao moi ministry
-    @PostMapping("/createMinistry")
-    public ResponseEntity<User> createMinistry(@RequestBody UserForm userForm) {
-        MultipartFile multipartFile = userForm.getImage();
-        String fileName = multipartFile.getOriginalFilename();
-        try {
-            FileCopyUtils.copy(userForm.getImage().getBytes(), new File(fileName+filePath));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        User user = new User();
-        user.setName(userForm.getName());
-        user.setEmail(userForm.getEmail());
-        user.setPhone(userForm.getPhone());
-        user.setCode(userForm.getCode());
-        user.setUsername(userForm.getUsername());
-        user.setPassword(userForm.getPassword());
-        user.setImage(fileName);
-        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
-    }
-
-    //cap nhat ministry
-    @PutMapping("/updateMinistry/{id}")
-    public ResponseEntity<User> editUser(@PathVariable ("id") Long id, UserForm userForm) {
-        Optional<User> userOptional = userService.findById(id);
-        if (!userOptional.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            MultipartFile userFormImage = userForm.getImage();
-            String fileName = userFormImage.getOriginalFilename();
-            try {
-                FileCopyUtils.copy(userFormImage.getBytes(), new File(fileName + filePath));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            User user = new User();
-            user.setName(userOptional.get().getName());
-            user.setEmail(userOptional.get().getEmail());
-            user.setPhone(userOptional.get().getPhone());
-            user.setUsername(userOptional.get().getUsername());
-            user.setPassword(userOptional.get().getPassword());
-            user.setImage(fileName);
-            return new ResponseEntity<>(userService.save(user),HttpStatus.OK);
-        }
     }
 
     //admin lay ra danh sach teach thong qua role
