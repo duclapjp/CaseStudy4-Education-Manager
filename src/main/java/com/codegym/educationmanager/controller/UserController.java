@@ -64,7 +64,7 @@ public class UserController {
     @GetMapping("/createAdminForm")
     public ModelAndView createAdminForm(){
         Iterable<Role> roles = roleService.findAll();
-        ModelAndView modelAndView = new ModelAndView("admin/create");
+        ModelAndView modelAndView = new ModelAndView("admin/create1");
         modelAndView.addObject("userForm", new UserForm());
         modelAndView.addObject("roles", roles);
         return modelAndView;
@@ -115,7 +115,7 @@ public class UserController {
     }
     @PostMapping("/admin")
     public ModelAndView saveAdmin(@Validated @ModelAttribute UserForm userForm, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView("admin/create");
+        ModelAndView modelAndView = new ModelAndView("admin/create1");
         if (!bindingResult.hasFieldErrors()) {
             if (userForm.getImage() != null) {
                 String fileName = userForm.getImage().getOriginalFilename();
@@ -126,18 +126,18 @@ public class UserController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                User user = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(),userForm.getCode(), fileName, userForm.getRole());
+                User user = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(), fileName, userForm.getRole());
                 userService.save(user);
                 modelAndView.addObject("userForm", userForm);
                 modelAndView.addObject("roles", roleService.findAll());
-                modelAndView.addObject("message", "Tao moi thanh cong");
+                modelAndView.addObject("message", "successful new creation");
                 return modelAndView;
             } else {
                 User use = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(),userForm.getCode(), userForm.getRole());
                 userService.save(use);
                 modelAndView.addObject("userForm", userForm);
                 modelAndView.addObject("roles", roleService.findAll());
-                modelAndView.addObject("message", "Tao moi thanh cong");
+                modelAndView.addObject("message", "successful new creation");
                 return modelAndView;
             }
         }
