@@ -34,6 +34,10 @@ public class BlogController {
         return new ResponseEntity<>(blogService.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Blog>> findBlogById(@PathVariable Long id) {
+        return new ResponseEntity<>(blogService.findById(id), HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<Blog> createBlog(@RequestBody Blog blog) {

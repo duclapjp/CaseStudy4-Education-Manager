@@ -13,9 +13,6 @@ public interface IUserService extends IGeneralService<User>, UserDetailsService 
     Optional<User> findByUsername(String username);
     Page<User> pageUser(Pageable pageable);
     Iterable<User> findUserByRole(Optional<Role> role);
-<<<<<<< HEAD
 
-=======
     Page<User> findAllByRole(Role role, Pageable pageable);
->>>>>>> 816795f1708337c38db8f303d001db07becc9f92
 }
