@@ -176,5 +176,14 @@ public class UserController {
             return new ResponseEntity<>("lêu lêu không thành công", HttpStatus.OK);
         }
     }
+    @GetMapping("/search/{code}")
+    public ResponseEntity<User> findByCode(@PathVariable("code") String code){
+        if (userService.findByCode(code).isPresent()){
+            return new ResponseEntity<>(userService.findByCode(code).get(),HttpStatus.OK);
+        }
+       else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }
 

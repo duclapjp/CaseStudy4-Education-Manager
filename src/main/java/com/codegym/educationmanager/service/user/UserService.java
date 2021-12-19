@@ -43,6 +43,11 @@ public class UserService implements IUserService{
         return userRepository.findByUsername(username);
     }
 
+    @Override
+    public Optional<User> findByCode(String code) {
+        return userRepository.findUserByCode(code);
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
