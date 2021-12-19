@@ -1,14 +1,20 @@
 package com.codegym.educationmanager.controller;
 
+import com.codegym.educationmanager.model.blog.Blog;
 import com.codegym.educationmanager.model.grade.Grade;
 import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.service.grade.IGradeService;
 import com.codegym.educationmanager.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -25,6 +31,10 @@ public class GradeController {
         ModelAndView modelAndView = new ModelAndView("grade/view");
         modelAndView.addObject("grades", grades);
         return modelAndView;
+    }
+    @GetMapping("/page")
+    public ResponseEntity<Page<Grade>> findAllPage(@PageableDefault(size = 6) Pageable pageable){
+        return new ResponseEntity<>(gradeService.findAll(pageable), HttpStatus.OK);
     }
     @GetMapping
     public ResponseEntity<Iterable<Grade>> findAll() {
@@ -50,5 +60,14 @@ public class GradeController {
         gradeService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Iterable<User>> findUserByGrade(@PathVariable Long id){
+        Optional<Grade> grade = gradeService.findById(id);
+        return new ResponseEntity<>(grade.get().getUser(), HttpStatus.OK);
+    }
+    @GetMapping("/blog/{id}")
+    public ResponseEntity<Iterable<Blog>> findBlogByGrade(@PathVariable Long id){
+        Optional<Grade> grade = gradeService.findById(id);
+        return new ResponseEntity<>(grade.get().getBlog(), HttpStatus.OK);
+    }
 }

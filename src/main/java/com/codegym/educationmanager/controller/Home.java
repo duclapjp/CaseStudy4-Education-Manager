@@ -12,9 +12,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-@RestController
+@Controller
 @CrossOrigin("*")
 @RequestMapping("/home")
 public class Home {
@@ -26,11 +28,15 @@ public class Home {
 
     @Autowired
     private IUserService userService;
+<<<<<<< HEAD
     @GetMapping("/test")
     public String returnString(){
         return "redirect:http://localhost:63342/web/contact.html";
     }
     @PostMapping
+=======
+    @PostMapping("/login")
+>>>>>>> 816795f1708337c38db8f303d001db07becc9f92
     public ResponseEntity<?> login(@RequestBody User user) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));

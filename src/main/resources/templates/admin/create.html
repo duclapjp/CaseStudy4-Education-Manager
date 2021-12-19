@@ -7,7 +7,7 @@
 <body>
 <h3><a href="http://localhost:63343/web/ministry.html">Manager</a></h3>
 <h2 th:if="${message}" th:text="${message}"></h2>
-<form th:action="@{/user/ministry}" th:object="${userForm}" method="post"  novalidate="novalidate" enctype="multipart/form-data">
+<form th:action="@{/user/admin}" th:object="${userForm}" method="post"  novalidate="novalidate" enctype="multipart/form-data">
     <table class="table" >
         <tr>
             <th>Name</th>

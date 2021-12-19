@@ -15,7 +15,7 @@ public class Grade {
     private String name;
     @OneToMany(targetEntity = User.class)
     private List<User> user;
-    @OneToMany(targetEntity = Grade.class)
+    @OneToMany(mappedBy = "grade")
     private List<Blog> blog;
 
     public Grade() {

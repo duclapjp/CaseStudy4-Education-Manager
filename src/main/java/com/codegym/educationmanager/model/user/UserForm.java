@@ -17,11 +17,34 @@ public class UserForm {
     private String username;
     @NotEmpty(message = "khong de trong")
     private String password;
+    @NotEmpty(message = "khong de trong")
+    private String code;
     private Role role;
     private MultipartFile image;
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public UserForm(Long id, String name, String email, String phone, String username, String password, String code, Role role, MultipartFile image) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.code = code;
+        this.role = role;
+        this.image = image;
+    }
+
     public UserForm() {
     }
+
 
     public UserForm(String name, String email, String phone, String username, String password, MultipartFile image) {
         this.name = name;
@@ -42,6 +65,17 @@ public class UserForm {
         this.image = image;
     }
 
+    public UserForm(String name, String email, String phone, String username, String password, String code, Role role, MultipartFile image) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.code = code;
+        this.role = role;
+        this.image = image;
+    }
+
     public UserForm(String name, String email, String phone, String username, String password, Role role, MultipartFile image) {
         this.name = name;
         this.email = email;
@@ -58,6 +92,16 @@ public class UserForm {
         this.phone = phone;
         this.username = username;
         this.password = password;
+        this.role = role;
+    }
+
+    public UserForm(String name, String email, String phone, String username, String password, String code, Role role) {
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.code = code;
         this.role = role;
     }
 
