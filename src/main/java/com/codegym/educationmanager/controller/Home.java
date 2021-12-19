@@ -28,6 +28,7 @@ public class Home {
 
     @Autowired
     private IUserService userService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         Authentication authentication = authenticationManager.authenticate(

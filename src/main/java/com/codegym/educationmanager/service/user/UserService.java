@@ -69,5 +69,6 @@ public class UserService implements IUserService{
     @Override
     public Iterable<User> findAllByRole(Optional<Role> role) {
         return userRepository.findAllByRole(role);
+
     }
 }

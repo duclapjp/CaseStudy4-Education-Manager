@@ -8,7 +8,7 @@
 <h3><a href="http://localhost:63342/web/ministry.html">Manager</a></h3>
 <h2 th:if="${message}" th:text="${message}"></h2>
 <form th:action="@{/user/ministry}" th:object="${userForm}" method="post"  novalidate="novalidate" enctype="multipart/form-data">
-    <table class="table" >
+    <table class="table">
         <tr>
             <th>Name</th>
             <td><input type="text" placeholder="input name" th:field="*{name}"></td>
@@ -48,6 +48,14 @@
             <td>
                 <select th:field="*{role}">
                     <option th:each="r:${roles}" th:value="${r.id}" th:text="${r.name}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Grade</th>
+            <td>
+                <select name="gradeId">
+                    <option th:each="grade:${grades}" th:value="${grade.id}" th:text="${grade.name}"></option>
                 </select>
             </td>
         </tr>

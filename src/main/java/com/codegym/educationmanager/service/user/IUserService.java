@@ -11,8 +11,12 @@ import java.util.Optional;
 
 public interface IUserService extends IGeneralService<User>, UserDetailsService {
     Optional<User> findByUsername(String username);
+
     Page<User> pageUser(Pageable pageable);
+
     Iterable<User> findUserByRole(Optional<Role> role);
+
     Page<User> findAllByRole(Role role, Pageable pageable);
+
     Iterable<User> findAllByRole(Optional<Role> role);
 }

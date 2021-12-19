@@ -1,5 +1,6 @@
 package com.codegym.educationmanager.model.user;
 
+import com.codegym.educationmanager.model.grade.Grade;
 import com.codegym.educationmanager.model.role.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
