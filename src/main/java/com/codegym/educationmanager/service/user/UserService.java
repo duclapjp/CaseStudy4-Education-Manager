@@ -65,4 +65,9 @@ public class UserService implements IUserService{
     public Page<User> findAllByRole(Role role, Pageable pageable) {
         return userRepository.findAllByRole(role, pageable);
     }
+
+    @Override
+    public void insertGradeAndUser(Long gradeId, Long userId) {
+        userRepository.insertGradeAndUser(gradeId, userId);
+    }
 }

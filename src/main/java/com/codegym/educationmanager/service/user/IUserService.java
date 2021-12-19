@@ -14,4 +14,5 @@ public interface IUserService extends IGeneralService<User>, UserDetailsService 
     Page<User> pageUser(Pageable pageable);
     Iterable<User> findUserByRole(Optional<Role> role);
     Page<User> findAllByRole(Role role, Pageable pageable);
+    void insertGradeAndUser(Long gradeId, Long userId);
 }

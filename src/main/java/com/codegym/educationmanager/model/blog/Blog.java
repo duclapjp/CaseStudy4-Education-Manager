@@ -31,6 +31,13 @@ public class Blog {
         this.date = date;
     }
 
+    public Blog(String title, String content, String date, Grade grade) {
+        this.title = title;
+        this.content = content;
+        this.date = date;
+        this.grade = grade;
+    }
+
     public Long getId() {
         return id;
     }
