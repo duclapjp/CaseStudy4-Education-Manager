@@ -1,8 +1,10 @@
 package com.codegym.educationmanager.model.user;
 
+import com.codegym.educationmanager.model.grade.Grade;
 import com.codegym.educationmanager.model.role.Role;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 public class UserForm {
@@ -17,7 +19,6 @@ public class UserForm {
     private String username;
     @NotEmpty(message = "khong de trong")
     private String password;
-    @NotEmpty(message = "khong de trong")
     private String code;
     private Role role;
     private MultipartFile image;
