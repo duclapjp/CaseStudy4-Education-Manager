@@ -56,13 +56,22 @@ public class UserController {
     @GetMapping("/createForm")
     public ModelAndView createForm(){
         Iterable<Role> roles = roleService.findAll();
-        ModelAndView modelAndView = new ModelAndView("user/create");
+        ModelAndView modelAndView = new ModelAndView("ministry/create");
         modelAndView.addObject("userForm", new UserForm());
         modelAndView.addObject("roles", roles);
         return modelAndView;
     }
-    @PostMapping
-    public ResponseEntity<User> saveUser(@Validated @RequestBody UserForm userForm, BindingResult bindingResult) {
+    @GetMapping("/createAdminForm")
+    public ModelAndView createAdminForm(){
+        Iterable<Role> roles = roleService.findAll();
+        ModelAndView modelAndView = new ModelAndView("admin/create");
+        modelAndView.addObject("userForm", new UserForm());
+        modelAndView.addObject("roles", roles);
+        return modelAndView;
+    }
+    @PostMapping("/ministry")
+    public ModelAndView saveUser(@Validated @ModelAttribute UserForm userForm, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView("ministry/create");
         if (!bindingResult.hasFieldErrors()) {
             if (userForm.getImage() != null) {
                 String fileName = userForm.getImage().getOriginalFilename();
@@ -73,16 +82,56 @@ public class UserController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                User user = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(), fileName, userForm.getRole());
+                User user = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(),userForm.getCode(), fileName, userForm.getRole());
                 userService.save(user);
-                return new ResponseEntity<>(user, HttpStatus.CREATED);
+                modelAndView.addObject("userForm", userForm);
+                modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("message", "Tao moi thanh cong");
+                return modelAndView;
             } else {
-                User use = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(), userForm.getRole());
+                User use = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(),userForm.getCode(), userForm.getRole());
                 userService.save(use);
-                return new ResponseEntity<>(use, HttpStatus.CREATED);
+                modelAndView.addObject("userForm", userForm);
+                modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("message", "Tao moi thanh cong");
+                return modelAndView;
             }
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        modelAndView.addObject("userForm", userForm);
+        modelAndView.addObject("roles", roleService.findAll());
+        return modelAndView;
+    }
+    @PostMapping("/admin")
+    public ModelAndView saveAdmin(@Validated @ModelAttribute UserForm userForm, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView("admin/create");
+        if (!bindingResult.hasFieldErrors()) {
+            if (userForm.getImage() != null) {
+                String fileName = userForm.getImage().getOriginalFilename();
+                Path path = Paths.get(filePath);
+                try {
+                    InputStream inputStream = userForm.getImage().getInputStream();
+                    Files.copy(inputStream, path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                User user = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(),userForm.getCode(), fileName, userForm.getRole());
+                userService.save(user);
+                modelAndView.addObject("userForm", userForm);
+                modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("message", "Tao moi thanh cong");
+                return modelAndView;
+            } else {
+                User use = new User(userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(),userForm.getCode(), userForm.getRole());
+                userService.save(use);
+                modelAndView.addObject("userForm", userForm);
+                modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("message", "Tao moi thanh cong");
+                return modelAndView;
+            }
+        }
+        modelAndView.addObject("userForm", userForm);
+        modelAndView.addObject("roles", roleService.findAll());
+        return modelAndView;
     }
 
     @DeleteMapping("/{id}")
