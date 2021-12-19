@@ -60,4 +60,9 @@ public class UserService implements IUserService{
     public Iterable<User> findUserByRole(Optional<Role> role) {
         return userRepository.findUserByRole(role);
     }
+
+    @Override
+    public Page<User> findAllByRole(Role role, Pageable pageable) {
+        return userRepository.findAllByRole(role, pageable);
+    }
 }

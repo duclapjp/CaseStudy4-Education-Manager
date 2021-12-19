@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="@{/user}" th:object="${userForm}" method="post"  novalidate="novalidate" enctype="multipart/form-data">
+    <table class="table" >
+        <tr>
+            <th>Name</th>
+            <td><input type="text" placeholder="input name" th:field="*{name}"></td>
+        </tr>
+        <tr>
+            <th>Code</th>
+            <td><input type="text" placeholder="input code" th:field="*{code}"></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td><input type="email" placeholder="input email" th:field="*{email}"></td>
+        </tr>
+        <tr>
+            <th>Phone</th>
+            <td><input type="number" placeholder="input phone" th:field="*{phone}"></td>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <td><input type="text" placeholder="input username" th:field="*{username}"></td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td><input type="password" th:field="*{password}"></td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td><input type="file" th:field="*{image}"></td>
+        </tr>
+        <tr>
+            <th>Role</th>
+            <td>
+                <select th:field="*{role}">
+                    <option th:each="r:${roles}" th:value="${r.id}" th:text="${r.name}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Save"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

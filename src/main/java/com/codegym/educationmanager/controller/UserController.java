@@ -29,8 +29,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/user")
+@CrossOrigin("*")
 public class UserController {
     @Autowired
     private IUserService userService;
@@ -43,21 +43,28 @@ public class UserController {
     public ResponseEntity<Iterable<User>> findAll() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
-
-    @GetMapping("/page")
-    public ResponseEntity<Page<User>> findAll(@PageableDefault(size = 6) Pageable pageable) {
-        return new ResponseEntity<>(userService.pageUser(pageable), HttpStatus.OK);
+    @GetMapping("/page/{roleName}")
+    public ResponseEntity<Page<User>> findAll(@PageableDefault(size = 6) Pageable pageable, @PathVariable String roleName) {
+        Role role = roleService.findRoleByName(roleName);
+        return new ResponseEntity<>(userService.findAllByRole(role, pageable), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id) {
         return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
     }
-
+    @GetMapping("/createForm")
+    public ModelAndView createForm(){
+        Iterable<Role> roles = roleService.findAll();
+        ModelAndView modelAndView = new ModelAndView("user/create");
+        modelAndView.addObject("userForm", new UserForm());
+        modelAndView.addObject("roles", roles);
+        return modelAndView;
+    }
     @PostMapping
     public ResponseEntity<User> saveUser(@Validated @RequestBody UserForm userForm, BindingResult bindingResult) {
         if (!bindingResult.hasFieldErrors()) {
-            if (userForm.getImage().isEmpty()) {
+            if (userForm.getImage() != null) {
                 String fileName = userForm.getImage().getOriginalFilename();
                 Path path = Paths.get(filePath);
                 try {

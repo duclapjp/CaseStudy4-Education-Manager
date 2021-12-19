@@ -4,6 +4,8 @@ import com.codegym.educationmanager.model.grade.Grade;
 import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.repository.IGradeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -34,5 +36,10 @@ public class GradeService implements IGradeService{
     @Override
     public Grade findGradeByUser(User user) {
         return gradeRepository.findGradeByUser(user);
+    }
+
+    @Override
+    public Page<Grade> findAll(Pageable pageable) {
+        return gradeRepository.findAll(pageable);
     }
 }
