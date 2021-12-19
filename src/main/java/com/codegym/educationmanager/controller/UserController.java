@@ -143,4 +143,12 @@ public class UserController {
             return new ResponseEntity<>(userService.save(user),HttpStatus.OK);
         }
     }
+
+    //admin lay ra danh sach teach thong qua role
+    @GetMapping("/findTeacherByRole/{role}")
+    public ResponseEntity<Iterable<User>> getTeacherByRole(@PathVariable ("role") Long id){
+        Optional<Role> role=roleService.findById(id);
+        Iterable<User> users = userService.findAllByRole(role);
+        return new ResponseEntity<>(users,HttpStatus.OK);
+    }
 }
