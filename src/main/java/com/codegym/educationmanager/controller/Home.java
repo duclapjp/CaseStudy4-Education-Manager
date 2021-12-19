@@ -26,6 +26,10 @@ public class Home {
 
     @Autowired
     private IUserService userService;
+    @GetMapping("/test")
+    public String returnString(){
+        return "redirect:http://localhost:63342/web/contact.html";
+    }
     @PostMapping
     public ResponseEntity<?> login(@RequestBody User user) {
         Authentication authentication = authenticationManager.authenticate(
