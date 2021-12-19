@@ -158,4 +158,16 @@ public class UserController {
         Iterable<User> users = userService.findUserByRole(role1);
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+
+    @PutMapping("/{id}/{newPass}/{oldPass}")
+    public ResponseEntity<String> editPass(@PathVariable Long id,@PathVariable String newPass,@PathVariable String oldPass) {
+        Optional<User> user1 = userService.findById(id);
+        if (user1.get().getPassword().equals(oldPass)) {
+            user1.get().setPassword(newPass);
+            userService.save(user1.get());
+            return new ResponseEntity<>("lêu lêu thành công", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("lêu lêu không thành công", HttpStatus.OK);
+        }
+    }
 }
