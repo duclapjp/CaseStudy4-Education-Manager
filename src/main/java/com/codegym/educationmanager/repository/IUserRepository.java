@@ -14,6 +14,4 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
     Iterable<User> findUserByRole(Optional<Role> role);
     Page<User> findAllByRole(Role role, Pageable pageable);
-    @Query(value = "call insertUserAndGrade(?1, ?2)", nativeQuery = true)
-    void insertGradeAndUser(Long gradeId, Long userId);
 }
