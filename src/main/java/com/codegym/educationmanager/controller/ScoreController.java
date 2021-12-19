@@ -36,7 +36,15 @@ public class ScoreController {
 
     @PostMapping
     public ResponseEntity<Score> createScore(@RequestBody Score score) {
+        scoreService.save(score);
         return new ResponseEntity<>(scoreService.save(score), HttpStatus.CREATED);
+    }
+    @PostMapping("/{id}")
+    public ResponseEntity<String> createScoreByStudentId(@PathVariable Long id,@RequestBody Score score) {
+        Optional<User> user = userService.findById(id);
+        score.setUser(user.get());
+        scoreService.save(score);
+        return new ResponseEntity<>("Success!", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
