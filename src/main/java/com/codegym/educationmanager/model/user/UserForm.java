@@ -17,6 +17,7 @@ public class UserForm {
     private String username;
     @NotEmpty(message = "khong de trong")
     private String password;
+    @NotEmpty(message = "khong de trong")
     private String code;
     private Role role;
     private MultipartFile image;

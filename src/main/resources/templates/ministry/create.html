@@ -1,185 +1,61 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create Ministry</title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
-          integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
-    <style>
-        html, body {
-            min-height: 100%;
-            padding: 0;
-            margin: 0;
-            font-family: Roboto, Arial, sans-serif;
-            font-size: 14px;
-            color: #666;
-        }
-
-        h1 {
-            margin: 0 0 20px;
-            font-weight: 400;
-            color: #1c87c9;
-        }
-
-        p {
-            margin: 0 0 5px;
-        }
-
-        .main-block {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: #1c87c9;
-        }
-
-        form {
-            padding: 25px;
-            margin: 25px;
-            box-shadow: 0 2px 5px #f5f5f5;
-            background: #f5f5f5;
-        }
-
-        .fas {
-            margin: 25px 10px 0;
-            font-size: 72px;
-            color: #fff;
-        }
-
-        .fa-envelope {
-            transform: rotate(-20deg);
-        }
-
-        .fa-at, .fa-mail-bulk {
-            transform: rotate(10deg);
-        }
-
-        input, textarea {
-            width: calc(100% - 18px);
-            padding: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #1c87c9;
-            outline: none;
-        }
-
-        input::placeholder {
-            color: #666;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            background: #1c87c9;
-            font-size: 16px;
-            font-weight: 400;
-            color: #fff;
-        }
-
-        button:hover {
-            background: #2371a0;
-        }
-
-        @media (min-width: 568px) {
-            .main-block {
-                flex-direction: row;
-            }
-
-            .left-part, form {
-                width: 50%;
-            }
-
-            .fa-envelope {
-                margin-top: 0;
-                margin-left: 20%;
-            }
-
-            .fa-at {
-                margin-top: -10%;
-                margin-left: 65%;
-            }
-
-            .fa-mail-bulk {
-                margin-top: 2%;
-                margin-left: 28%;
-            }
-        }
-    </style>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-<div class="main-block">
-    <div class="left-part">
-        <i class="fas fa-envelope"></i>
-        <i class="fas fa-at"></i>
-        <i class="fas fa-mail-bulk"></i>
-    </div>
-        <form th:action="/create_ministry" method="post" th:object="${ministries}">
-            <h1>Create Ministry</h1>
-            <div class="info">
-                <input class="fname" type="text" name="name" th:field="*{name}" placeholder="Ministry Name">
-                <input type="email" name="email" th:field="*{email}" placeholder="Ministry Email">
-                <input type="text" name="phone" th:field="*{phone}" placeholder="Ministry Phone number">
-                <input type="text" name="username" th:field="*{username}" placeholder="username">
-                <input type="password" name="password" th:field="*{password}" placeholder="password">
-                <input type="file" name="image" th:field="*{image}">
-            </div>
-            <input type="submit" value="SAVE"/>
-            <th:block th:if="${message}">
-                <p th:text="${message}"></p>
-            </th:block>
-        </form>
-
-</div>
+<h3><a href="http://localhost:63343/web/ministry.html">Manager</a></h3>
+<h2 th:if="${message}" th:text="${message}"></h2>
+<form th:action="@{/user/ministry}" th:object="${userForm}" method="post"  novalidate="novalidate" enctype="multipart/form-data">
+    <table class="table" >
+        <tr>
+            <th>Name</th>
+            <td><input type="text" placeholder="input name" th:field="*{name}"></td>
+            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+        </tr>
+        <tr>
+            <th>Code</th>
+            <td><input type="text" placeholder="input code" th:field="*{code}"></td>
+            <td th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td><input type="email" placeholder="input email" th:field="*{email}"></td>
+            <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
+        </tr>
+        <tr>
+            <th>Phone</th>
+            <td><input type="number" placeholder="input phone" th:field="*{phone}"></td>
+            <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></td>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <td><input type="text" placeholder="input username" th:field="*{username}"></td>
+            <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></td>
+        </tr>
+        <tr>
+            <th>Password</th>
+            <td><input type="password" th:field="*{password}"></td>
+            <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td><input type="file" th:field="*{image}"></td>
+        </tr>
+        <tr>
+            <th>Role</th>
+            <td>
+                <select th:field="*{role}">
+                    <option th:each="r:${roles}" th:value="${r.id}" th:text="${r.name}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Save"></td>
+        </tr>
+    </table>
+</form>
 </body>
 </html>
-
-
-<!--<form action="@{/user}" th:object="${userForm}" method="post" novalidate="novalidate" enctype="multipart/form-data">-->
-<!--    <table class="table">-->
-<!--        <h1>Create Ministry</h1>-->
-<!--        <tr>-->
-<!--            <th>Name</th>-->
-<!--            <td><input type="text" placeholder="input name" th:field="*{name}"></td>-->
-<!--        </tr>-->
-<!--        &lt;!&ndash;            <tr>&ndash;&gt;-->
-<!--        &lt;!&ndash;                <th>Code</th>&ndash;&gt;-->
-<!--        &lt;!&ndash;                <td><input type="text" placeholder="input code" th:field="*{code}"></td>&ndash;&gt;-->
-<!--        &lt;!&ndash;            </tr>&ndash;&gt;-->
-<!--        <tr>-->
-<!--            <th>Email</th>-->
-<!--            <td><input type="email" placeholder="input email" th:field="*{email}"></td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <th>Phone</th>-->
-<!--            <td><input type="number" placeholder="input phone" th:field="*{phone}"></td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <th>Username</th>-->
-<!--            <td><input type="text" placeholder="input username" th:field="*{username}"></td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <th>Password</th>-->
-<!--            <td><input type="password" th:field="*{password}"></td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <th>Image</th>-->
-<!--            <td><input type="file" th:field="*{image}"></td>-->
-<!--        </tr>-->
-<!--        &lt;!&ndash;            <tr>&ndash;&gt;-->
-<!--        &lt;!&ndash;                <th>Role</th>&ndash;&gt;-->
-<!--        &lt;!&ndash;                <td>&ndash;&gt;-->
-<!--        &lt;!&ndash;                    <select th:field="*{role}">&ndash;&gt;-->
-<!--        &lt;!&ndash;                        <option th:each="r:${roles}" th:value="${r.id}" th:text="${r.name}"></option>&ndash;&gt;-->
-<!--        &lt;!&ndash;                    </select>&ndash;&gt;-->
-<!--        &lt;!&ndash;                </td>&ndash;&gt;-->
-<!--        &lt;!&ndash;            </tr>&ndash;&gt;-->
-<!--        <tr>-->
-<!--            <td></td>-->
-<!--            <td><input type="submit" value="Save"></td>-->
-<!--        </tr>-->
-<!--    </table>-->
-<!--    <th:block th:if="${message}">-->
-<!--        <p th:text="${message}"></p>-->
-<!--    </th:block>-->
-<!--</form>-->
