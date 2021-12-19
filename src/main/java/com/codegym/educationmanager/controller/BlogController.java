@@ -40,8 +40,9 @@ public class BlogController {
     }
 
     @PostMapping
-    public ResponseEntity<Blog> createBlog(@RequestBody Blog blog) {
-        return new ResponseEntity<>(blogService.save(blog), HttpStatus.CREATED);
+    public ResponseEntity<String> createBlog(@RequestBody Blog blog) {
+        blogService.save(blog);
+        return new ResponseEntity<>("Success!", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
