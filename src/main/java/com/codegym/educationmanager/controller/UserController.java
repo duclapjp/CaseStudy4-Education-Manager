@@ -11,7 +11,6 @@ import com.codegym.educationmanager.service.subject.ISubjectService;
 import com.codegym.educationmanager.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -282,7 +281,7 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/{newPass}/{oldPass}")
+    @PutMapping("/changePassword/{id}/{newPass}/{oldPass}")
     public ResponseEntity<String> editPass(@PathVariable Long id, @PathVariable String newPass, @PathVariable String oldPass) {
         Optional<User> user1 = userService.findById(id);
         if (user1.get().getPassword().equals(oldPass)) {

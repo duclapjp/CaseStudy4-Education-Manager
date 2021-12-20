@@ -4,6 +4,7 @@ import com.codegym.educationmanager.model.grade.Grade;
 import com.codegym.educationmanager.model.role.Role;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 

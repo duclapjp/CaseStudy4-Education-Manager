@@ -72,35 +72,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().ignoringAntMatchers("/**");
         http.httpBasic().authenticationEntryPoint(restServicesEntryPoint());
         http.authorizeRequests()
-                .antMatchers("/**").permitAll()
-//                .antMatchers("/home/login").permitAll()
-                //todo -------------------------------------------------------------------------
-//                .and().authorizeRequests().antMatchers(HttpMethod.GET, "/role**").permitAll()
-//                .and().authorizeRequests().antMatchers(HttpMethod.PUT, "/user/**").permitAll()
-//                .and()
-//                .authorizeRequests().antMatchers("/user**", "/subject**", "/score**", "/role**").hasRole("ROLE_ADMIN")
-//                .and()
-//                .authorizeRequests().antMatchers(HttpMethod.PUT, "/subjects/**").hasAnyRole("ROLE_MINISTRY", "ROLE_TEACHER")
-//                .and()
-//                .authorizeRequests().antMatchers(HttpMethod.GET, "/user/**").hasRole("ROLE_MINISTRY")
-//                .and()
-//                .authorizeRequests().antMatchers("/user/page/**", "/user/createForm**", "/user/ministry**").hasRole("ROLE_MINISTRY")
-//                .and()
-//                .authorizeRequests().antMatchers(HttpMethod.GET, "/subjects/**").hasRole("ROLE_MINISTRY")
-//                .and()
-//                .authorizeRequests().antMatchers(HttpMethod.POST, "/subjects/**").hasRole("ROLE_MINISTRY")
-//                .and()
-//                .authorizeRequests().antMatchers(HttpMethod.DELETE, "/subjects/**").hasRole("ROLE_MINISTRY")
-//                .and()
-//                .authorizeRequests().antMatchers(HttpMethod.GET,"/score**").hasRole("ROLE_STUDENT")
-//                .and()
-//                .authorizeRequests().antMatchers(HttpMethod.GET,"/user/**").hasRole("ROLE_TEACHER")
-                //todo -----------------------------------------------------------------------
-
-//                .and()
-//                .authorizeRequests().antMatchers("/ministry/")
-                .anyRequest().authenticated()
-                .and().csrf().disable();
+                .antMatchers("/home/login").permitAll()
+                .and()
+                .authorizeRequests().antMatchers("/user/**", "/subject/**", "/score/**", "/role/**", "/grade/**", "/blog/**").hasAnyRole("ADMIN")
+                .and()
+                .authorizeRequests().antMatchers( "/user/**", "/subject/**", "/score/**", "/role/**", "/grade/**", "/blog/**").hasAnyRole("MINISTRY")
+                .and()
+                .authorizeRequests().antMatchers("/user/**", "/subject/**", "/score/**", "/role/**", "/grade/**", "/blog/**").hasAnyRole("TEACHER")
+                .and()
+                .authorizeRequests().antMatchers("/user/changePassword/**", "/user/*", "/score/*").hasRole("STUDENT");
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
         http.sessionManagement()
