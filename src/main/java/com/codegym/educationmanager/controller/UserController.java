@@ -63,7 +63,7 @@ public class UserController {
     @GetMapping("/createForm")
     public ModelAndView createForm() {
         Iterable<Role> roles = roleService.findAll();
-        ModelAndView modelAndView = new ModelAndView("create");
+        ModelAndView modelAndView = new ModelAndView("ministry/create");
         modelAndView.addObject("userForm", new UserForm());
         modelAndView.addObject("grades", gradeService.findAll());
         modelAndView.addObject("roles", roles);
