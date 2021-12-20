@@ -46,7 +46,6 @@ public class UserForm {
     public UserForm() {
     }
 
-
     public UserForm(String name, String email, String phone, String username, String password, MultipartFile image) {
         this.name = name;
         this.email = email;
@@ -75,6 +74,16 @@ public class UserForm {
         this.code = code;
         this.role = role;
         this.image = image;
+    }
+
+    public UserForm(Long id, String name, String email, String phone, String username, String password, String code) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.username = username;
+        this.password = password;
+        this.code = code;
     }
 
     public UserForm(String name, String email, String phone, String username, String password, Role role, MultipartFile image) {

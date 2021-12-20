@@ -11,7 +11,7 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany(targetEntity = User.class)
+    @ManyToMany(targetEntity = User.class)
     private List<User> user;
     public Subject() {
     }

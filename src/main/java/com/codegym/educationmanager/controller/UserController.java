@@ -2,13 +2,16 @@ package com.codegym.educationmanager.controller;
 
 import com.codegym.educationmanager.model.grade.Grade;
 import com.codegym.educationmanager.model.role.Role;
+import com.codegym.educationmanager.model.subject.Subject;
 import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.model.user.UserForm;
 import com.codegym.educationmanager.service.grade.IGradeService;
 import com.codegym.educationmanager.service.role.IRoleService;
+import com.codegym.educationmanager.service.subject.ISubjectService;
 import com.codegym.educationmanager.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -36,6 +39,8 @@ public class UserController {
     private IRoleService roleService;
     @Autowired
     private IGradeService gradeService;
+    @Autowired
+    private ISubjectService subjectService;
     @Value("${file-path}")
     private String filePath;
 
@@ -62,6 +67,7 @@ public class UserController {
         modelAndView.addObject("userForm", new UserForm());
         modelAndView.addObject("grades", gradeService.findAll());
         modelAndView.addObject("roles", roles);
+        modelAndView.addObject("subjects", subjectService.findAll());
         return modelAndView;
     }
 
@@ -73,9 +79,67 @@ public class UserController {
         modelAndView.addObject("roles", roles);
         return modelAndView;
     }
+    @GetMapping("/ministry/edit/{id}")
+    public ModelAndView editUser(@PathVariable Long id){
+        User user = userService.findById(id).get();
+        UserForm userForm = new UserForm(user.getId(), user.getName(), user.getEmail(), user.getPhone(),user.getUsername(), user.getPassword(), user.getCode());
+        ModelAndView modelAndView = new ModelAndView("ministry/edit");
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("userForm", userForm);
+        modelAndView.addObject("roles", roleService.findAll());
+        return modelAndView;
+    }
+    @GetMapping("/admin/edit/{id}")
+    public ModelAndView editUserAdmin(@PathVariable Long id){
+        User user = userService.findById(id).get();
+        UserForm userForm = new UserForm(user.getId(), user.getName(), user.getEmail(), user.getPhone(),user.getUsername(), user.getPassword(), user.getCode());
+        ModelAndView modelAndView = new ModelAndView("admin/edit");
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("userForm", userForm);
+        modelAndView.addObject("roles", roleService.findAll());
+        return modelAndView;
+    }
+    @PostMapping("/admin/edit")
+    public ModelAndView editUserAdmin(@Validated @ModelAttribute UserForm userForm, BindingResult bindingResult) {
+        if (!bindingResult.hasFieldErrors()) {
+            if (userForm.getImage() != null) {
+                String fileName = userForm.getImage().getOriginalFilename();
+                Path path = Paths.get(filePath);
+                try {
+                    InputStream inputStream = userForm.getImage().getInputStream();
+                    Files.copy(inputStream, path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                User user = new User(userForm.getId(),userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(), fileName, userForm.getCode(), userForm.getRole());
+                userService.save(user);
+                ModelAndView modelAndView = new ModelAndView("admin/edit");
+                modelAndView.addObject("userForm", userForm);
+                modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("user", user);
+                modelAndView.addObject("message", "Sua thanh cong");
+                return modelAndView;
+            } else {
+                User user = new User(userForm.getId(),userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(), userForm.getCode(), userForm.getRole());
+                userService.save(user);
+                ModelAndView modelAndView = new ModelAndView("admin/edit");
+                modelAndView.addObject("userForm", userForm);
+                modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("user", user);
+                modelAndView.addObject("message", "Sua thanh cong");
 
+                return modelAndView;
+            }
+        }
+        ModelAndView modelAndView = new ModelAndView("admin/edit");
+        modelAndView.addObject("userForm", userForm);
+        modelAndView.addObject("user", userService.findById(userForm.getId()).get());
+        modelAndView.addObject("roles", roleService.findAll());
+        modelAndView.addObject("message", "Sua khong thanh cong");
+        return modelAndView;
+    }
     @PostMapping("/ministry")
-    public ModelAndView saveUser(@Validated @ModelAttribute UserForm userForm, @RequestParam("gradeId") Long gradeId, BindingResult bindingResult) {
+    public ModelAndView saveUser(@Validated @ModelAttribute UserForm userForm, @RequestParam("gradeId") Long gradeId, @RequestParam("subjectIds") Long[] subjectIds, BindingResult bindingResult) {
         if (!bindingResult.hasFieldErrors()) {
             if (userForm.getImage() != null) {
                 String fileName = userForm.getImage().getOriginalFilename();
@@ -91,10 +155,16 @@ public class UserController {
                 Grade grade = gradeService.findById(gradeId).get();
                 grade.getUser().add(user);
                 gradeService.save(grade);
+                for (int i = 0; i < subjectIds.length; i++){
+                    Subject subject = subjectService.findById(subjectIds[i]).get();
+                    subject.getUsers().add(user);
+                    subjectService.save(subject);
+                }
                 ModelAndView modelAndView = new ModelAndView("ministry/create");
                 modelAndView.addObject("userForm", userForm);
                 modelAndView.addObject("grades", gradeService.findAll());
                 modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("subjects", subjectService.findAll());
                 modelAndView.addObject("message", "Tao moi thanh cong");
                 return modelAndView;
             } else {
@@ -103,11 +173,18 @@ public class UserController {
                 Grade grade = gradeService.findById(gradeId).get();
                 grade.getUser().add(user);
                 gradeService.save(grade);
+                for (int i = 0; i < subjectIds.length; i++){
+                    Subject subject = subjectService.findById(subjectIds[i]).get();
+                    subject.getUsers().add(user);
+                    subjectService.save(subject);
+                }
                 ModelAndView modelAndView = new ModelAndView("ministry/create");
                 modelAndView.addObject("userForm", userForm);
                 modelAndView.addObject("grades", gradeService.findAll());
                 modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("subjects", subjectService.findAll());
                 modelAndView.addObject("message", "Tao moi thanh cong");
+
                 return modelAndView;
             }
         }
@@ -115,7 +192,47 @@ public class UserController {
         modelAndView.addObject("userForm", userForm);
         modelAndView.addObject("grades", gradeService.findAll());
         modelAndView.addObject("roles", roleService.findAll());
+        modelAndView.addObject("subjects", subjectService.findAll());
         modelAndView.addObject("message", "Tao moi khong thanh cong");
+        return modelAndView;
+    }
+    @PostMapping ("/ministry/edit")
+    public ModelAndView editUser(@Validated @ModelAttribute UserForm userForm, BindingResult bindingResult) {
+        if (!bindingResult.hasFieldErrors()) {
+            if (userForm.getImage() != null) {
+                String fileName = userForm.getImage().getOriginalFilename();
+                Path path = Paths.get(filePath);
+                try {
+                    InputStream inputStream = userForm.getImage().getInputStream();
+                    Files.copy(inputStream, path.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                User user = new User(userForm.getId(),userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(), fileName, userForm.getCode(), userForm.getRole());
+                userService.save(user);
+                ModelAndView modelAndView = new ModelAndView("ministry/edit");
+                modelAndView.addObject("userForm", userForm);
+                modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("user", user);
+                modelAndView.addObject("message", "Sua thanh cong");
+                return modelAndView;
+            } else {
+                User user = new User(userForm.getId(),userForm.getName(), userForm.getEmail(), userForm.getPhone(), userForm.getUsername(), userForm.getPassword(), userForm.getCode(), userForm.getRole());
+                userService.save(user);
+                ModelAndView modelAndView = new ModelAndView("ministry/edit");
+                modelAndView.addObject("userForm", userForm);
+                modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("user", user);
+                modelAndView.addObject("message", "Sua thanh cong");
+
+                return modelAndView;
+            }
+        }
+        ModelAndView modelAndView = new ModelAndView("ministry/edit");
+        modelAndView.addObject("userForm", userForm);
+        modelAndView.addObject("user", userService.findById(userForm.getId()).get());
+        modelAndView.addObject("roles", roleService.findAll());
+        modelAndView.addObject("message", "Sua khong thanh cong");
         return modelAndView;
     }
 
@@ -186,13 +303,15 @@ public class UserController {
         }
     }
 
-    @GetMapping("/editMinistry")
-    public ModelAndView updateMinistry() {
-        Iterable<Role> roles = roleService.findAll();
-        ModelAndView modelAndView = new ModelAndView("admin/edit");
-        modelAndView.addObject("userForm", new UserForm());
-        modelAndView.addObject("roles", roles);
-        return modelAndView;
+    @PutMapping("/{id}/{newName}/{newEmail}/{newPhone}/{newCode}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id,@PathVariable String newName,@PathVariable String newEmail,@PathVariable String newPhone,@PathVariable String newCode){
+        Optional<User> user = userService.findById(id);
+        user.get().setName(newName);
+        user.get().setEmail(newEmail);
+        user.get().setPhone(newPhone);
+        user.get().setCode(newCode);
+        userService.save(user.get());
+        return new ResponseEntity<>(user.get(),HttpStatus.OK);
     }
 }
 
