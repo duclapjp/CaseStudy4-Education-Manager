@@ -5,14 +5,19 @@
     <title>Title</title>
 </head>
 <body>
-<h3><a href="http://localhost:63342/CaseStudy4-Education-Manager-FE/manager.html">Manager</a></h3>
+<h3><a href="http://localhost:63342/web/ministry.html">Manager</a></h3>
 <h2 th:if="${message}" th:text="${message}"></h2>
-<form th:action="@{/user/admin}" th:object="${userForm}" method="post"  novalidate="novalidate" enctype="multipart/form-data">
-    <table class="table" >
+<form th:action="@{/user/ministry}" th:object="${userForm}" method="post"  novalidate="novalidate" enctype="multipart/form-data">
+    <table class="table">
         <tr>
             <th>Name</th>
             <td><input type="text" placeholder="input name" th:field="*{name}"></td>
             <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+        </tr>
+        <tr>
+            <th>Code</th>
+            <td><input type="text" placeholder="input code" th:field="*{code}"></td>
+            <td th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></td>
         </tr>
         <tr>
             <th>Email</th>
@@ -39,10 +44,18 @@
             <td><input type="file" th:field="*{image}"></td>
         </tr>
         <tr>
-<!--            <th>Role</th>-->
+            <th>Role</th>
             <td>
-                <select hidden th:field="*{role}">
-                    <option th:value="3"></option>
+                <select th:field="*{role}">
+                    <option th:each="r:${roles}" th:value="${r.id}" th:text="${r.name}"></option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Grade</th>
+            <td>
+                <select name="gradeId">
+                    <option th:each="grade:${grades}" th:value="${grade.id}" th:text="${grade.name}"></option>
                 </select>
             </td>
         </tr>

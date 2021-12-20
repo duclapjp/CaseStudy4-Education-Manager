@@ -58,7 +58,7 @@ public class UserController {
     @GetMapping("/createForm")
     public ModelAndView createForm() {
         Iterable<Role> roles = roleService.findAll();
-        ModelAndView modelAndView = new ModelAndView("ministry/create");
+        ModelAndView modelAndView = new ModelAndView("create");
         modelAndView.addObject("userForm", new UserForm());
         modelAndView.addObject("grades", gradeService.findAll());
         modelAndView.addObject("roles", roles);
@@ -176,14 +176,23 @@ public class UserController {
             return new ResponseEntity<>("lêu lêu không thành công", HttpStatus.OK);
         }
     }
+
     @GetMapping("/search/{code}")
-    public ResponseEntity<User> findByCode(@PathVariable("code") String code){
-        if (userService.findByCode(code).isPresent()){
-            return new ResponseEntity<>(userService.findByCode(code).get(),HttpStatus.OK);
-        }
-       else {
+    public ResponseEntity<User> findByCode(@PathVariable("code") String code) {
+        if (userService.findByCode(code).isPresent()) {
+            return new ResponseEntity<>(userService.findByCode(code).get(), HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/editMinistry")
+    public ModelAndView updateMinistry() {
+        Iterable<Role> roles = roleService.findAll();
+        ModelAndView modelAndView = new ModelAndView("admin/edit");
+        modelAndView.addObject("userForm", new UserForm());
+        modelAndView.addObject("roles", roles);
+        return modelAndView;
     }
 }
 
