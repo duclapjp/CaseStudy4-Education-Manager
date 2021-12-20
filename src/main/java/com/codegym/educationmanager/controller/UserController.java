@@ -2,10 +2,12 @@ package com.codegym.educationmanager.controller;
 
 import com.codegym.educationmanager.model.grade.Grade;
 import com.codegym.educationmanager.model.role.Role;
+import com.codegym.educationmanager.model.subject.Subject;
 import com.codegym.educationmanager.model.user.User;
 import com.codegym.educationmanager.model.user.UserForm;
 import com.codegym.educationmanager.service.grade.IGradeService;
 import com.codegym.educationmanager.service.role.IRoleService;
+import com.codegym.educationmanager.service.subject.ISubjectService;
 import com.codegym.educationmanager.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,10 +21,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,6 +39,8 @@ public class UserController {
     private IRoleService roleService;
     @Autowired
     private IGradeService gradeService;
+    @Autowired
+    private ISubjectService subjectService;
     @Value("${file-path}")
     private String filePath;
 
@@ -59,6 +65,7 @@ public class UserController {
         modelAndView.addObject("userForm", new UserForm());
         modelAndView.addObject("grades", gradeService.findAll());
         modelAndView.addObject("roles", roles);
+        modelAndView.addObject("subjects", subjectService.findAll());
         return modelAndView;
     }
     @GetMapping("/createAdminForm")
@@ -70,7 +77,7 @@ public class UserController {
         return modelAndView;
     }
     @PostMapping("/ministry")
-    public ModelAndView saveUser(@Validated @ModelAttribute UserForm userForm, @RequestParam("gradeId") Long gradeId, BindingResult bindingResult) {
+    public ModelAndView saveUser(@Validated @ModelAttribute UserForm userForm, @RequestParam("gradeId") Long gradeId, @RequestParam("subjectIds") Long[] subjectIds, BindingResult bindingResult) {
         if (!bindingResult.hasFieldErrors()) {
             if (userForm.getImage() != null) {
                 String fileName = userForm.getImage().getOriginalFilename();
@@ -86,10 +93,16 @@ public class UserController {
                 Grade grade = gradeService.findById(gradeId).get();
                 grade.getUser().add(user);
                 gradeService.save(grade);
+                for (int i = 0; i < subjectIds.length; i++){
+                    Subject subject = subjectService.findById(subjectIds[i]).get();
+                    subject.getUsers().add(user);
+                    subjectService.save(subject);
+                }
                 ModelAndView modelAndView = new ModelAndView("ministry/create");
                 modelAndView.addObject("userForm", userForm);
                 modelAndView.addObject("grades", gradeService.findAll());
                 modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("subjects", subjectService.findAll());
                 modelAndView.addObject("message", "Tao moi thanh cong");
                 return modelAndView;
             } else {
@@ -98,11 +111,18 @@ public class UserController {
                 Grade grade = gradeService.findById(gradeId).get();
                 grade.getUser().add(user);
                 gradeService.save(grade);
+                for (int i = 0; i < subjectIds.length; i++){
+                    Subject subject = subjectService.findById(subjectIds[i]).get();
+                    subject.getUsers().add(user);
+                    subjectService.save(subject);
+                }
                 ModelAndView modelAndView = new ModelAndView("ministry/create");
                 modelAndView.addObject("userForm", userForm);
                 modelAndView.addObject("grades", gradeService.findAll());
                 modelAndView.addObject("roles", roleService.findAll());
+                modelAndView.addObject("subjects", subjectService.findAll());
                 modelAndView.addObject("message", "Tao moi thanh cong");
+
                 return modelAndView;
             }
         }
@@ -110,6 +130,7 @@ public class UserController {
         modelAndView.addObject("userForm", userForm);
         modelAndView.addObject("grades", gradeService.findAll());
         modelAndView.addObject("roles", roleService.findAll());
+        modelAndView.addObject("subjects", subjectService.findAll());
         modelAndView.addObject("message", "Tao moi khong thanh cong");
         return modelAndView;
     }

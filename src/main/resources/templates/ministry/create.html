@@ -3,11 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function selectOject() {
+            let roleId = document.getElementById("role").value;
+            if (roleId != 3) {
+                $("#subjectList").hide();
+            } else {
+                $("#subjectList").show();
+            }
+        }
+    </script>
 </head>
 <body>
 <h3><a href="http://localhost:63342/web/ministry.html">Manager</a></h3>
 <h2 th:if="${message}" th:text="${message}"></h2>
-<form th:action="@{/user/ministry}" th:object="${userForm}" method="post"  novalidate="novalidate" enctype="multipart/form-data">
+<form th:action="@{/user/ministry}" th:object="${userForm}" method="post" novalidate="novalidate"
+      enctype="multipart/form-data">
     <table class="table">
         <tr>
             <th>Name</th>
@@ -46,11 +60,20 @@
         <tr>
             <th>Role</th>
             <td>
-                <select th:field="*{role}">
-                    <option th:each="r:${roles}" th:value="${r.id}" th:text="${r.name}"></option>
+                <select th:field="*{role}" id="role" onchange="selectOject()">
+                    <option th:each="r:${roles}" th:if="${r.id == 3 || r.id == 4}" th:value="${r.id}" th:text="${r.name}"></option>
                 </select>
             </td>
         </tr>
+            <tr id="subjectList">
+                <th>Subject</th>
+                <td>
+                    <select name="subjectIds" multiple>
+                        <option th:each="subject:${subjects}" th:value="${subject.id}" th:text="${subject.name}"></option>
+                    </select>
+                </td>
+            </tr>
+
         <tr>
             <th>Grade</th>
             <td>
