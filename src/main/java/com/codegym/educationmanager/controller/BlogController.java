@@ -40,8 +40,9 @@ public class BlogController {
     }
 
     @PostMapping
-    public ResponseEntity<Blog> createBlog(@RequestBody Blog blog) {
-        return new ResponseEntity<>(blogService.save(blog), HttpStatus.CREATED);
+    public ResponseEntity<String> createBlog(@RequestBody Blog blog) {
+        blogService.save(blog);
+        return new ResponseEntity<>("Success!", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -57,12 +58,12 @@ public class BlogController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Blog> deleteBlog(@PathVariable Long id) {
+    public ResponseEntity<String> deleteBlog(@PathVariable Long id) {
         Optional<Blog> blog = blogService.findById(id);
         if (!blog.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else
             blogService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Success!",HttpStatus.OK);
     }
 }
