@@ -1,91 +1,416 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-  <script type="text/javascript" src="js/bootstrap.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript">
-    // function selectOject() {
-    //     let roleId = document.getElementById("role").value;
-    //     if (roleId != 3) {
-    //         $("#subjectList").hide();
-    //     } else {
-    //         $("#subjectList").show();
-    //     }
-    // }
-  </script>
+    <title>Account registration form</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet'
+          type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <style>
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body,
+        div,
+        form,
+        input,
+        select,
+        p {
+            padding: 0;
+            margin: 0;
+            outline: none;
+            font-family: Roboto, Arial, sans-serif;
+            font-size: 14px;
+            color: #666;
+        }
+
+        h1 {
+            margin: 0;
+            font-weight: 400;
+        }
+
+        h3 {
+            margin: 12px 0;
+            color: #8ebf42;
+        }
+
+        .main-block {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+        }
+
+        form {
+            width: 100%;
+            padding: 20px;
+        }
+
+        fieldset {
+            border: none;
+            border-top: 1px solid #8ebf42;
+        }
+
+        .account-details,
+        .personal-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .account-details > div,
+        .personal-details > div > div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .account-details > div,
+        .personal-details > div,
+        input,
+        label {
+            width: 100%;
+        }
+
+        label {
+            padding: 0 5px;
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        input {
+            padding: 5px;
+            vertical-align: middle;
+        }
+
+        .checkbox {
+            margin-bottom: 10px;
+        }
+
+        select,
+        .children,
+        .gender,
+        .bdate-block {
+            width: calc(100% + 26px);
+            padding: 5px 0;
+        }
+
+        select {
+            background: transparent;
+        }
+
+        .gender input {
+            width: auto;
+        }
+
+        .gender label {
+            padding: 0 5px 0 0;
+        }
+
+        .bdate-block {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .birthdate select.day {
+            width: 35px;
+        }
+
+        .birthdate select.mounth {
+            width: calc(100% - 94px);
+        }
+
+        .birthdate input {
+            width: 38px;
+            vertical-align: unset;
+        }
+
+        .checkbox input,
+        .children input {
+            width: auto;
+            margin: -2px 10px 0 0;
+        }
+
+        .checkbox a {
+            color: #8ebf42;
+        }
+
+        .checkbox a:hover {
+            color: #82b534;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px 0;
+            margin: 10px auto;
+            border-radius: 5px;
+            border: none;
+            background: #8ebf42;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        button:hover {
+            background: #82b534;
+        }
+
+        @media (min-width: 568px) {
+
+            .account-details > div,
+            .personal-details > div {
+                width: 50%;
+            }
+
+            label {
+                width: 40%;
+            }
+
+            input {
+                width: 60%;
+            }
+
+            select,
+            .children,
+            .gender,
+            .bdate-block {
+                width: calc(60% + 16px);
+            }
+        }
+
+        .xacthuc {
+            background: #055fea;
+            font-size: 24px;
+            font-weight: bold;
+            -webkit-animation: my 700ms infinite;
+            -moz-animation: my 700ms infinite;
+            -o-animation: my 700ms infinite;
+            animation: my 700ms infinite;
+            text-align: center;
+        }
+
+        @-webkit-keyframes my {
+            0% {
+                color: #F8CD0A;
+            }
+
+            50% {
+                color: #fff;
+            }
+
+            100% {
+                color: #F8CD0A;
+            }
+        }
+
+        @-moz-keyframes my {
+            0% {
+                color: #F8CD0A;
+            }
+
+            50% {
+                color: #fff;
+            }
+
+            100% {
+                color: #F8CD0A;
+            }
+        }
+
+        @-o-keyframes my {
+            0% {
+                color: #F8CD0A;
+            }
+
+            50% {
+                color: #fff;
+            }
+
+            100% {
+                color: #F8CD0A;
+            }
+        }
+
+        @keyframes my {
+            0% {
+                color: #F8CD0A;
+            }
+
+            50% {
+                color: #fff;
+            }
+
+            100% {
+                color: #F8CD0A;
+            }
+        }
+    </style>
 </head>
+
 <body>
 <h3><a href="http://localhost:63343/web/ministry.html">Manager</a></h3>
-<h2 th:if="${message}" th:text="${message}"></h2>
-<form th:action="@{/user/ministry}" th:object="${userForm}" method="post" novalidate="novalidate"
-      enctype="multipart/form-data">
-  <table class="table">
-    <tr>
-      <th>Name</th>
-      <td><input type="text" placeholder="input name" th:field="*{name}"></td>
-      <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
-    </tr>
-    <tr>
-      <th>Code</th>
-      <td><input type="text" placeholder="input code" th:field="*{code}"></td>
-      <td th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></td>
-    </tr>
-    <tr>
-      <th>Email</th>
-      <td><input type="email" placeholder="input email" th:field="*{email}"></td>
-      <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
-    </tr>
-    <tr>
-      <th>Phone</th>
-      <td><input type="number" placeholder="input phone" th:field="*{phone}"></td>
-      <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></td>
-    </tr>
-    <tr>
-      <th>Username</th>
-      <td><input type="text" placeholder="input username" th:field="*{username}"></td>
-      <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></td>
-    </tr>
-    <tr>
-      <th>Password</th>
-      <td><input type="password" th:field="*{password}"></td>
-      <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
-    </tr>
-    <tr>
-      <th>Image</th>
-      <td><input type="file" th:field="*{image}"></td>
-    </tr>
-    <tr>
-      <th>Role</th>
-      <td>
-        <select th:field="*{role}" id="role">
-          <option th:each="r:${roles}" th:if="${r.id == 3 || r.id == 4}" th:value="${r.id}" th:text="${r.name}"></option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <th>Subject</th>
-      <td>
-        <select name="subjectIds" multiple>
-          <option th:each="subject:${subjects}" th:value="${subject.id}" th:text="${subject.name}"></option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <th>Grade</th>
-      <td>
-        <select name="gradeId">
-          <option th:each="grade:${grades}" th:value="${grade.id}" th:text="${grade.name}"></option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><input type="submit" value="Save"></td>
-    </tr>
-  </table>
-</form>
+<h2 class="xacthuc" th:if="${message}" th:text="${message}" style="color: #2e6da4"></h2>
+<div class="main-block">
+    <form th:action="@{/user/ministry}" th:object="${userForm}" method="post" novalidate="novalidate"
+          enctype="multipart/form-data">
+        <h1>Create User</h1>
+        <fieldset>
+            <legend>
+                <h3>Account Details</h3>
+            </legend>
+            <div class="account-details">
+                <div><label>Username*</label>
+                    <input type="text" placeholder="input username" th:field="*{username}">
+                    <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></td>
+                </div>
+                <div style="margin-right: 3px "><label>Password*</label>
+                    <input type="password" th:field="*{password}" placeholder="input password">
+                    <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>
+                </div>
+                <div><label>Email*</label>
+                    <td><input type="email" placeholder="input email" th:field="*{email}"></td>
+                    <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>
+                <h3>Personal Details</h3>
+            </legend>
+            <div class="personal-details">
+                <div>
+                    <div>
+                        <label>Name*</label>
+                        <input type="text" placeholder="input name" th:field="*{name}">
+                        <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+                    </div>
+                    <div>
+                        <label>Code*</label>
+                        <input type="text" placeholder="input code" th:field="*{code}">
+                        <td th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></td>
+                    </div>
+                    <div>
+                        <label>Phone*</label>
+                        <input type="number" placeholder="input phone" th:field="*{phone}">
+                        <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></td>
+                    </div>
+
+                    <div>
+                        <label>Role*</label>
+                        <select th:field="*{role}" id="role">
+                            <option th:each="r:${roles}" th:if="${r.id == 3 || r.id == 4}" th:value="${r.id}"
+                                    th:text="${r.name}"></option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Grade</label>
+                        <select name="gradeId">
+                            <option th:each="grade:${grades}" th:value="${grade.id}" th:text="${grade.name}"></option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Image*</label>
+                        <input type="file" th:field="*{image}">
+                    </div>
+                </div>
+                <button type="submit" href="/">Submit</button>
+        </fieldset>
+    </form>
+</div>
 </body>
 </html>
+
+<!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <title>Title</title>-->
+<!--  <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>-->
+<!--  <script type="text/javascript" src="js/bootstrap.js"></script>-->
+<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+<!--  <script type="text/javascript">-->
+<!--    // function selectOject() {-->
+<!--    //     let roleId = document.getElementById("role").value;-->
+<!--    //     if (roleId != 3) {-->
+<!--    //         $("#subjectList").hide();-->
+<!--    //     } else {-->
+<!--    //         $("#subjectList").show();-->
+<!--    //     }-->
+<!--    // }-->
+<!--  </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h3><a href="http://localhost:63343/web/ministry.html">Manager</a></h3>-->
+<!--<h2 th:if="${message}" th:text="${message}"></h2>-->
+<!--<form th:action="@{/user/ministry}" th:object="${userForm}" method="post" novalidate="novalidate"-->
+<!--      enctype="multipart/form-data">-->
+<!--  <table class="table">-->
+<!--    <tr>-->
+<!--      <th>Name</th>-->
+<!--      <td><input type="text" placeholder="input name" th:field="*{name}"></td>-->
+<!--      <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <th>Code</th>-->
+<!--      <td><input type="text" placeholder="input code" th:field="*{code}"></td>-->
+<!--      <td th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <th>Email</th>-->
+<!--      <td><input type="email" placeholder="input email" th:field="*{email}"></td>-->
+<!--      <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <th>Phone</th>-->
+<!--      <td><input type="number" placeholder="input phone" th:field="*{phone}"></td>-->
+<!--      <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <th>Username</th>-->
+<!--      <td><input type="text" placeholder="input username" th:field="*{username}"></td>-->
+<!--      <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <th>Password</th>-->
+<!--      <td><input type="password" th:field="*{password}"></td>-->
+<!--      <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <th>Image</th>-->
+<!--      <td><input type="file" th:field="*{image}"></td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <th>Role</th>-->
+<!--      <td>-->
+<!--        <select th:field="*{role}" id="role">-->
+<!--          <option th:each="r:${roles}" th:if="${r.id == 3 || r.id == 4}" th:value="${r.id}" th:text="${r.name}"></option>-->
+<!--        </select>-->
+<!--      </td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <th>Subject</th>-->
+<!--      <td>-->
+<!--        <select name="subjectIds" multiple>-->
+<!--          <option th:each="subject:${subjects}" th:value="${subject.id}" th:text="${subject.name}"></option>-->
+<!--        </select>-->
+<!--      </td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <th>Grade</th>-->
+<!--      <td>-->
+<!--        <select name="gradeId">-->
+<!--          <option th:each="grade:${grades}" th:value="${grade.id}" th:text="${grade.name}"></option>-->
+<!--        </select>-->
+<!--      </td>-->
+<!--    </tr>-->
+<!--    <tr>-->
+<!--      <td></td>-->
+<!--      <td><input type="submit" value="Save"></td>-->
+<!--    </tr>-->
+<!--  </table>-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
