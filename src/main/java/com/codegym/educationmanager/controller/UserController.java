@@ -185,5 +185,15 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @PutMapping("/{id}/{newName}/{newEmail}/{newPhone}/{newCode}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id,@PathVariable String newName,@PathVariable String newEmail,@PathVariable String newPhone,@PathVariable String newCode){
+        Optional<User> user = userService.findById(id);
+        user.get().setName(newName);
+        user.get().setEmail(newEmail);
+        user.get().setPhone(newPhone);
+        user.get().setCode(newCode);
+        userService.save(user.get());
+        return new ResponseEntity<>(user.get(),HttpStatus.OK);
+    }
 }
 
