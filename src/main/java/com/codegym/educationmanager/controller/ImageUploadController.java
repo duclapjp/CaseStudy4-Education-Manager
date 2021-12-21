@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 
 @Controller
 @RequestMapping("/")
+@CrossOrigin("*")
 public class ImageUploadController {
     @Value("${file-path}")
     private String filePath;

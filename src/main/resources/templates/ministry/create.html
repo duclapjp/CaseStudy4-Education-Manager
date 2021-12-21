@@ -250,7 +250,7 @@
 </head>
 
 <body>
-<h3><a href="http://localhost:63343/web/ministry.html">Manager</a></h3>
+<h3><a href="http://localhost:63342/CaseStudy4-Education-Manager-FE/ministry.html">Manager</a></h3>
 <h2 class="xacthuc" th:if="${message}" th:text="${message}" style="color: #2e6da4"></h2>
 <div class="main-block">
     <form th:action="@{/user/ministry}" th:object="${userForm}" method="post" novalidate="novalidate"
@@ -296,12 +296,17 @@
                         <input type="number" placeholder="input phone" th:field="*{phone}">
                         <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></td>
                     </div>
-
                     <div>
                         <label>Role*</label>
                         <select th:field="*{role}" id="role">
                             <option th:each="r:${roles}" th:if="${r.id == 3 || r.id == 4}" th:value="${r.id}"
                                     th:text="${r.name}"></option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Subject*</label>
+                        <select name="subjectIds">
+                            <option th:each="r:${subjects}" th:value="${r.id}" th:text="${r.name}"></option>
                         </select>
                     </div>
                     <div>
